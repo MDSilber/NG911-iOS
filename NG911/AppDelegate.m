@@ -32,9 +32,9 @@
                                                                  delegate:self 
                                                         cancelButtonTitle:@"Exit" 
                                                         otherButtonTitles:nil, nil];
+        [noInternetAlert setTag:0];
         [noInternetAlert show];
         [noInternetAlert release];
-        exit(1);
     }
     
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
@@ -94,4 +94,12 @@
      */
 }
 
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == [alertView cancelButtonIndex])
+    {
+        NSLog(@"No internet");
+        exit(1);
+    }
+}
 @end

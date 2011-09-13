@@ -322,6 +322,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                                                            delegate:nil
                                                   cancelButtonTitle:@"OK"
                                                   otherButtonTitles:nil, nil];
+            [noCameraAlert setTag:1];
             [noCameraAlert show];
             [noCameraAlert release];
             return;
@@ -342,6 +343,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                                                                    delegate:nil
                                                           cancelButtonTitle:@"OK"
                                                           otherButtonTitles:nil, nil];
+            [noCameraAlert setTag:2];
             [noCameraAlert show];
             [noCameraAlert release];
             return;
@@ -368,4 +370,6 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     NSLog(@"%@",image);
     
 }
+
+
 @end
