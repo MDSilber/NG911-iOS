@@ -121,6 +121,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 -(void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
 {
     currentLocationCoordinates = newLocation.coordinate;
+    NSLog(@"%f,%f",currentLocationCoordinates.latitude, currentLocationCoordinates.longitude);
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -334,7 +335,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     }
     else if(buttonIndex == 1)
     {
-        if(![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary] || ![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+        if(![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum] || ![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
         {
             UIAlertView *noCameraAlert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                     message:@"This device does not support a photo library"
@@ -346,7 +347,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
             return;
         }
         
-        [picker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+        [picker setSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
         [picker setShowsCameraControls:YES];
         [picker setAllowsEditing:NO];
         [self presentModalViewController:picker animated:YES];
@@ -364,6 +365,5 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 {
     UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
-    
 }
 @end
