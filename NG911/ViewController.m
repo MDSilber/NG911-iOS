@@ -8,7 +8,7 @@
 
 
 // Test comment for github
-// Test #2 Modified
+// Test #2 Modified from Terminal
 
 #import "ViewController.h"
 #import "AboutViewController.h"
