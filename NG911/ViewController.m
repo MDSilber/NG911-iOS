@@ -365,5 +365,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 {
     UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
+    NSLog(@"%@",image);
+    
 }
 @end
