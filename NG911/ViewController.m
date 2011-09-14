@@ -328,7 +328,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     }
     else if(buttonIndex == 1)
     {
-        if(![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum] || ![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+        if(![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum])
         {
             UIAlertView *noCameraAlert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                     message:@"This device does not support a photo library"
@@ -340,12 +340,13 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
             [noCameraAlert release];
             return;
         }
-        
+        NSLog(@"AAAAAA");
         [picker setSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
-        [picker setShowsCameraControls:YES];
+        NSLog(@"BBBBB");
+        //[picker setShowsCameraControls:YES];
+        NSLog(@"CCCCCC");
         [picker setAllowsEditing:NO];
         [self presentModalViewController:picker animated:YES];
-        
     }
     else if(buttonIndex != [actionSheet cancelButtonIndex])
     {
