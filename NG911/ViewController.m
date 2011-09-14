@@ -105,7 +105,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     send = [UIButton buttonWithType:UIButtonTypeCustom];
     [send setFrame:CGRectMake(260, 7, 50, 26)];
     [send setBackgroundImage:[UIImage imageNamed:@"sendbutton.png"] forState:UIControlStateNormal];
-    [send addTarget:self action:@selector(send:) forControlEvents:UIControlEventTouchUpInside];
+    [send addTarget:self action:@selector(sendText:) forControlEvents:UIControlEventTouchUpInside];
     [send setEnabled:NO];
     [textView addSubview:send];
     
@@ -126,6 +126,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    NSLog(@"View will appear");
     [textBox resignFirstResponder];
 }
 
@@ -185,13 +186,23 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
 
--(void)send:(id)sender
-{   
+-(UILabel *)labelWithDate
+{
     NSDate *currentDate = [NSDate date];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"MMM dd,yyyy h:mm:ss a"];
     NSString *dateString = [formatter stringFromDate:currentDate];
     [formatter release];
+    
+    UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, scrollView.contentSize.height - 30, 320, 25)];
+    [dateLabel setText:dateString];
+    [dateLabel setTextAlignment:UITextAlignmentCenter];
+    
+    return dateLabel;
+}
+
+-(void)sendText:(id)sender
+{   
     
     if(messageHasBeenSent)
     {
@@ -199,14 +210,17 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         expand.height += 20;
         [scrollView setContentSize:expand];
     }
+
+//    NSDate *currentDate = [NSDate date];
+//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//    [formatter setDateFormat:@"MMM dd,yyyy h:mm:ss a"];
+//    NSString *dateString = [formatter stringFromDate:currentDate];
+//    [formatter release];
+//    
+//    UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, scrollView.contentSize.height - 30, 320, 25)];
+//    [dateLabel setText:dateString];
+//    [dateLabel setTextAlignment:UITextAlignmentCenter];
     
-    UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, scrollView.contentSize.height - 30, 320, 25)];
-    [dateLabel setText:dateString];
-    [dateLabel setTextAlignment:UITextAlignmentCenter];
-    
-//    CGSize contentSize = [scrollView contentSize];
-//    contentSize.height += [dateLabel frame].size.height;
-//    [scrollView setContentSize:contentSize];
     
     NSString *message = [textBox text];
     [textBox setText:nil];
@@ -227,39 +241,17 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     CGSize contentSize;
     
+    UILabel *dateLabel = [self labelWithDate];
     if((dateLabel.frame.origin.y + dateLabel.frame.size.height) > messageLabel.frame.origin.y)
     {
         CGRect newFrame = messageLabel.frame;
-        newFrame.origin.y = dateLabel.frame.origin.y + dateLabel.frame.size.height + 5;
+        newFrame.origin.y = dateLabel.frame.origin.y + [self labelWithDate].frame.size.height + 5;
         [messageLabel setFrame:newFrame];
     }
     
-//    if([scrollView frame].size.height < 376)
-//    {
-//        CGRect newFrame = CGRectMake([scrollView frame].origin.x, 
-//                                     [scrollView frame].origin.y, 
-//                                     [scrollView frame].size.width, 
-//                                     [scrollView frame].size.height + [dateLabel frame].size.height + [messageLabel frame].size.height);
-//        
-//        [scrollView setFrame:newFrame];
-//        
-//        if([scrollView frame].size.height > 376)
-//        {
-//            CGRect currentFrame = [scrollView frame];
-//            currentFrame.size.height = 376;
-//            [scrollView setFrame:currentFrame];
-//            
-//            CGSize newContentSize = [scrollView contentSize];
-//            newContentSize.height += [scrollView frame].size.height - 376;
-//            [scrollView setContentSize:newContentSize];
-//        }
-//    }
-//    else
-    {
-        contentSize = [scrollView contentSize];
-        contentSize.height += [dateLabel frame].size.height + [messageLabel frame].size.height;
-        [scrollView setContentSize:contentSize];
-    }
+    contentSize = [scrollView contentSize];
+    contentSize.height += [dateLabel frame].size.height + [messageLabel frame].size.height;
+    [scrollView setContentSize:contentSize];
     
     [scrollView addSubview:dateLabel];
     [scrollView addSubview:messageLabel];
@@ -267,7 +259,6 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     CGSize bounds = [scrollView bounds].size;
     [scrollView setContentOffset:CGPointMake([scrollView contentOffset].x, [scrollView contentSize].height - bounds.height) animated:YES];
 
-    [dateLabel release];
     [messageLabel release];
     
     if(!messageHasBeenSent)
@@ -279,6 +270,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 -(void)getPhoto:(id)sender
 {
+    [textBox resignFirstResponder];
     UIActionSheet *photoOptions = [[UIActionSheet alloc] initWithTitle:nil 
                                                               delegate:self 
                                                      cancelButtonTitle:@"Cancel" 
@@ -365,10 +357,35 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
+    if(messageHasBeenSent)
+    {
+        CGSize expand = [scrollView contentSize];
+        expand.height += 20;
+        [scrollView setContentSize:expand];
+    }
+    
+    NSLog(@"finished picking media with info");
     UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
-    NSLog(@"%@",image);
     
+    UILabel *dateLabel = [self labelWithDate];
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, [scrollView contentSize].height, 96, 126)];
+    [imageView setContentMode:UIViewContentModeScaleToFill];
+    [imageView setImage:image];
+    
+    CGSize contentSize = CGSizeMake([scrollView contentSize].width, [scrollView contentSize].height);
+    contentSize.height += imageView.frame.size.height +dateLabel.frame.size.height+ 5;
+    [scrollView setContentSize:contentSize];
+
+    [scrollView addSubview:dateLabel];
+    [scrollView addSubview:imageView];
+
+    CGSize bounds = [scrollView bounds].size;
+    [scrollView setContentOffset:CGPointMake([scrollView contentOffset].x, [scrollView contentSize].height - bounds.height) animated:YES];
+    
+    [picker dismissModalViewControllerAnimated:NO];
+
 }
 
 

@@ -23,9 +23,10 @@
 }
 
 -(void)getPhoto:(id)sender;
--(void)send:(id)sender;
+-(void)sendText:(id)sender;
 -(void)hideKeyboard:(id)sender;
 -(void)about:(id)sender;
 -(void)sendMessageToServer:(NSString *)message;
+-(UILabel *)labelWithDate;
 
 @end
