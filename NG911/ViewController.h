@@ -26,7 +26,6 @@
 -(void)sendText:(id)sender;
 -(void)hideKeyboard:(id)sender;
 -(void)about:(id)sender;
--(void)sendMessageToServer:(NSString *)message;
 -(UILabel *)labelWithDate;
 
 @end

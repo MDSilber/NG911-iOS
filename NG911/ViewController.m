@@ -321,6 +321,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         }
         
         [picker setSourceType:UIImagePickerControllerSourceTypeCamera];
+        [picker setCameraFlashMode:UIImagePickerControllerCameraFlashModeOff];
         [picker setShowsCameraControls:YES];
         [picker setAllowsEditing:NO];
         [self presentModalViewController:picker animated:YES];
@@ -367,7 +368,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     NSLog(@"finished picking media with info");
     UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-    NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
+    //NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
     
     UILabel *dateLabel = [self labelWithDate];
     
