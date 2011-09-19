@@ -211,17 +211,6 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         [scrollView setContentSize:expand];
     }
 
-//    NSDate *currentDate = [NSDate date];
-//    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-//    [formatter setDateFormat:@"MMM dd,yyyy h:mm:ss a"];
-//    NSString *dateString = [formatter stringFromDate:currentDate];
-//    [formatter release];
-//    
-//    UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, scrollView.contentSize.height - 30, 320, 25)];
-//    [dateLabel setText:dateString];
-//    [dateLabel setTextAlignment:UITextAlignmentCenter];
-    
-    
     NSString *message = [textBox text];
     [textBox setText:nil];
     [send setEnabled:NO];
@@ -341,11 +330,9 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
             [noCameraAlert release];
             return;
         }
-        NSLog(@"AAAAAA");
+        
         [picker setSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
-        NSLog(@"BBBBB");
-        //[picker setShowsCameraControls:YES];
-        NSLog(@"CCCCCC");
+
         [picker setAllowsEditing:NO];
         [self presentModalViewController:picker animated:YES];
     }
@@ -390,5 +377,9 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 }
 
+-(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker 
+{
+    [picker dismissModalViewControllerAnimated:YES];
+}
 
 @end
