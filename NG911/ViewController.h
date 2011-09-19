@@ -10,8 +10,9 @@
 #import <CoreLocation/CoreLocation.h>
 #import <QuartzCore/QuartzCore.h>
 
-#import "DataModel.h"
-#import "Message.h"
+@class DataModel;
+@class Message;
+
 
 
 @interface ViewController : UIViewController <CLLocationManagerDelegate,UITextViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource>
@@ -24,6 +25,8 @@
     UITextView *textBox;
     BOOL messageHasBeenSent;
     CLLocationManager *locationManager;
+    
+    
     CGPoint nextFrameOrigin;
     
     

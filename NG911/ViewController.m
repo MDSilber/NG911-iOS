@@ -14,6 +14,8 @@
 
 #import "ViewController.h"
 #import "AboutViewController.h"
+#import "DataModel.h"
+#import "Message.h"
 
 #define Keyboard_Offset 215
 #define MESSAGE_OFFSET 66
@@ -74,9 +76,18 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     [[self view] setBackgroundColor:[UIColor whiteColor]];
     
+    msgView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, 376) style:UITableViewStylePlain];
+    msgView.tag = 3;
+    [msgView setDelegate:self];
+    [msgView setDataSource:self];
+    
+    [[self view] addSubview:msgView];
+    
     textView = [[UIView alloc] initWithFrame:CGRectMake(0, 376, self.view.frame.size.width, 40)];
     [textView setBackgroundColor:[UIColor groupTableViewBackgroundColor]];
-    [[self view] addSubview:textView];
+    
+    [msgView addSubview:textView];
+ //   [[self view] addSubview:textView];
 
     locationManager = [[CLLocationManager alloc] init];
     [locationManager setDelegate:self];
@@ -110,17 +121,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
    // [[self view] addSubview:scrollView];
     
-    
-    msgView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, 376) style:UITableViewStylePlain];
-    msgView.tag = 3;
-    [msgView setDelegate:self];
-    [msgView setDataSource:self];
-    
-    [[self view] addSubview:msgView];
-    
-    
-    
-    
+        
     nextFrameOrigin = CGPointMake(5, 10); // initial point
     
     

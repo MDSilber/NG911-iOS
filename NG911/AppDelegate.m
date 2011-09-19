@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import "Reachability.h"
 #import "ViewController.h"
+#import "DataModel.h"
+#import "Message.h"
 
 
 
@@ -42,11 +44,9 @@
     
     [dataModel addMessage:message];
     
-    NSLog(@"Added message in App Delegate");
+    NSLog(@"Count in AppD = %d\n", dataModel.messages.count);
     
-    [message release];
-    
-    _viewController.dataModel = dataModel;
+    [message release];    
     
     
     if(![AppDelegate connectedToInternet])
@@ -62,20 +62,12 @@
     }
     
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-    // Override point for customization after application launch.
-    
-//    self.viewController = [[[ViewController alloc] initWithNibName:@"mainViewController" bundle:nil] autorelease];
-//    [self.viewController setTitle:@"NG911"];
-//    navigationController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
-//    
-//    [[self window] addSubview:navigationController.view];
-//    [self.window makeKeyAndVisible];
-//    return YES;
-    
-    
     
     self.viewController = [[[ViewController alloc] initWithNibName:@"ViewController" bundle:nil] autorelease];
     [self.viewController setTitle:@"NG911"];
+    
+    [self viewController].dataModel = dataModel;
+    
     navigationController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
     [[self window] addSubview:navigationController.view];
     [self.window makeKeyAndVisible];

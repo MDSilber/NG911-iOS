@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DataModel.h"
-#import "Message.h"
+
 
 @class ViewController;
 @class DataModel;
