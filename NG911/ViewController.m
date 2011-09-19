@@ -379,6 +379,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         }
         
         [picker setSourceType:UIImagePickerControllerSourceTypeCamera];
+        [picker setCameraFlashMode:UIImagePickerControllerCameraFlashModeOff];
         [picker setShowsCameraControls:YES];
         [picker setAllowsEditing:NO];
         [self presentModalViewController:picker animated:YES];
