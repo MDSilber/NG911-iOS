@@ -10,7 +10,11 @@
 #import <CoreLocation/CoreLocation.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface ViewController : UIViewController <CLLocationManagerDelegate,UITextViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+#import "DataModel.h"
+#import "Message.h"
+
+
+@interface ViewController : UIViewController <CLLocationManagerDelegate,UITextViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource>
 {
     CLLocationCoordinate2D currentLocationCoordinates;
     NSString *phoneNumber;
@@ -20,6 +24,12 @@
     UITextView *textBox;
     BOOL messageHasBeenSent;
     CLLocationManager *locationManager;
+    CGPoint nextFrameOrigin;
+    
+    
+    // New stuff
+    UITableView * msgView;
+    
 }
 
 -(void)getPhoto:(id)sender;
@@ -28,5 +38,8 @@
 -(void)about:(id)sender;
 -(void)sendMessageToServer:(NSString *)message;
 -(UILabel *)labelWithDate;
+
+@property (nonatomic, assign) DataModel* dataModel;
+
 
 @end

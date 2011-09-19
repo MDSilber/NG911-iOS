@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1CE5BE661427A39900B0D5FF /* DataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CE5BE651427A39900B0D5FF /* DataModel.m */; };
+		1CE5BE691427A45F00B0D5FF /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CE5BE681427A45F00B0D5FF /* Message.m */; };
 		2807CE42141C16130048DA7F /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2807CE40141C16130048DA7F /* AboutViewController.m */; };
 		2807CE43141C16130048DA7F /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2807CE41141C16130048DA7F /* AboutViewController.xib */; };
 		2807CE4E141C17450048DA7F /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 2807CE4D141C17450048DA7F /* Reachability.m */; };
@@ -28,6 +30,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1CE5BE641427A39900B0D5FF /* DataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataModel.h; path = ../DataModel.h; sourceTree = "<group>"; };
+		1CE5BE651427A39900B0D5FF /* DataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataModel.m; path = ../DataModel.m; sourceTree = "<group>"; };
+		1CE5BE671427A45F00B0D5FF /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
+		1CE5BE681427A45F00B0D5FF /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 		2807CE3F141C16130048DA7F /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		2807CE40141C16130048DA7F /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		2807CE41141C16130048DA7F /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
@@ -107,6 +113,10 @@
 		28AB1E49141A8C92006582F5 /* NG911 */ = {
 			isa = PBXGroup;
 			children = (
+				1CE5BE641427A39900B0D5FF /* DataModel.h */,
+				1CE5BE651427A39900B0D5FF /* DataModel.m */,
+				1CE5BE671427A45F00B0D5FF /* Message.h */,
+				1CE5BE681427A45F00B0D5FF /* Message.m */,
 				28AB1E6A141AAF40006582F5 /* camera.png */,
 				28AB1E66141A945B006582F5 /* sendbutton.png */,
 				2807CE3F141C16130048DA7F /* AboutViewController.h */,
@@ -208,6 +218,8 @@
 				28AB1E57141A8C92006582F5 /* ViewController.m in Sources */,
 				2807CE42141C16130048DA7F /* AboutViewController.m in Sources */,
 				2807CE4E141C17450048DA7F /* Reachability.m in Sources */,
+				1CE5BE661427A39900B0D5FF /* DataModel.m in Sources */,
+				1CE5BE691427A45F00B0D5FF /* Message.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

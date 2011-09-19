@@ -16,6 +16,7 @@
 #import "AboutViewController.h"
 
 #define Keyboard_Offset 215
+#define MESSAGE_OFFSET 66
 
 #define UIColorFromRGB(rgbValue) [UIColor \
 colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 \
@@ -23,6 +24,8 @@ green:((float)((rgbValue & 0xFF00) >> 8))/255.0 \
 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]  
 
 @implementation ViewController
+
+@synthesize dataModel;
 
 -(void)dealloc
 {
@@ -93,14 +96,33 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     [textBox setAutocorrectionType:UITextAutocorrectionTypeNo];
     [textBox setAutocapitalizationType:UITextAutocapitalizationTypeSentences];
     [textBox setDelegate:self];
+    textBox.tag = 1;
     [textView addSubview:textBox];
     
     
-    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 376)];
+    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 376)]; 
     [scrollView setBackgroundColor:[UIColor whiteColor]];
     [scrollView setScrollEnabled:YES];
     [scrollView setContentSize:CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height)];
-    [[self view] addSubview:scrollView];
+    scrollView.tag = 2;
+    
+    //[scrollView setContentOffset:CGPointMake(0, 100)];
+    
+   // [[self view] addSubview:scrollView];
+    
+    
+    msgView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, 376) style:UITableViewStylePlain];
+    msgView.tag = 3;
+    [msgView setDelegate:self];
+    [msgView setDataSource:self];
+    
+    [[self view] addSubview:msgView];
+    
+    
+    
+    
+    nextFrameOrigin = CGPointMake(5, 10); // initial point
+    
     
     send = [UIButton buttonWithType:UIButtonTypeCustom];
     [send setFrame:CGRectMake(260, 7, 50, 26)];
@@ -114,6 +136,20 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     [photo setBackgroundImage:[UIImage imageNamed:@"camera.png"] forState:UIControlStateNormal];
     [photo addTarget:self action:@selector(getPhoto:) forControlEvents:UIControlEventTouchUpInside];
     [textView addSubview:photo];
+    
+    
+    Message* message = [[Message alloc] init];
+    message.text = @"TEST1";
+    message.timestamp = @"TIMESTAMP";
+    
+    [dataModel addMessage:message];
+    
+    NSLog(@"NUM_MSG = %d", dataModel.messages.count);
+    
+    [message release];
+    
+
+    
     
     return self;
 }
@@ -136,11 +172,16 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
      {
          CGRect frame = [[self view] frame];
          frame.origin.y -= Keyboard_Offset;
+         
+         //UITextView *myTextView = (UITextView*) [[self view] viewWithTag:1];
+      
+      //   [(UIScrollView*)[[self view] viewWithTag:2] setContentOffset:CGPointMake(0, nextFrameOrigin.y + 66) animated:YES];
          [[self view] setFrame:frame];
          
      }
                      completion:NULL];
     [[[self navigationItem] rightBarButtonItem] setEnabled:YES];
+   
 }
 
 -(void)textViewDidEndEditing:(UITextField *)textField
@@ -155,6 +196,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
                      completion:NULL];
     [[[self navigationItem] rightBarButtonItem] setEnabled:NO];
     
+    
 }
 
 -(void)textViewDidChange:(UITextView *)textField
@@ -162,6 +204,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     if(![[textField text] isEqualToString:@""])
     {
         [send setEnabled:YES];
+    } else {
+        [send setEnabled:NO];
     }
 }
 
@@ -190,11 +234,11 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 {
     NSDate *currentDate = [NSDate date];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"MMM dd,yyyy h:mm:ss a"];
+    [formatter setDateFormat:@"MMM dd, yyyy h:mm:ss a"];
     NSString *dateString = [formatter stringFromDate:currentDate];
     [formatter release];
     
-    UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, scrollView.contentSize.height - 30, 320, 25)];
+    UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, nextFrameOrigin.y, 320, 25)];
     [dateLabel setText:dateString];
     [dateLabel setTextAlignment:UITextAlignmentCenter];
     
@@ -226,8 +270,15 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     [textBox setText:nil];
     [send setEnabled:NO];
 
-    double lines = ceil((double)[message length]/30.0);
-    UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, [scrollView contentSize].height-20*lines-10, 300, 20*lines)];
+    double lines = ceil((double)[message length]/30.0); // number of lines in message
+    
+    
+   // UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(nextFrameOrigin.x, [scrollView contentSize].height-20*lines-10, 300, 20*lines)];
+
+    UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(nextFrameOrigin.x, nextFrameOrigin.y + 5, 300, 20*lines)];
+    
+
+    
     [messageLabel setNumberOfLines:0];
     [messageLabel setLineBreakMode:UILineBreakModeWordWrap];
     [messageLabel setText:[NSString stringWithFormat:@"Me: %@", message]];
@@ -242,6 +293,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     CGSize contentSize;
     
     UILabel *dateLabel = [self labelWithDate];
+   
     if((dateLabel.frame.origin.y + dateLabel.frame.size.height) > messageLabel.frame.origin.y)
     {
         CGRect newFrame = messageLabel.frame;
@@ -256,9 +308,12 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     [scrollView addSubview:dateLabel];
     [scrollView addSubview:messageLabel];
     
-    CGSize bounds = [scrollView bounds].size;
-    [scrollView setContentOffset:CGPointMake([scrollView contentOffset].x, [scrollView contentSize].height - bounds.height) animated:YES];
+    //CGSize bounds = [scrollView bounds].size;
+    //[scrollView setContentOffset:CGPointMake([scrollView contentOffset].x, [scrollView contentSize].height - bounds.height) animated:YES];
 
+    
+    
+    
     [messageLabel release];
     
     if(!messageHasBeenSent)
@@ -266,6 +321,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
         messageHasBeenSent = YES;
     }
 
+    nextFrameOrigin.y += MESSAGE_OFFSET;
+    
 }
 
 -(void)getPhoto:(id)sender
@@ -367,7 +424,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     NSLog(@"finished picking media with info");
     UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-    NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
+   // NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
     
     UILabel *dateLabel = [self labelWithDate];
     
@@ -393,6 +450,38 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     [picker dismissModalViewControllerAnimated:YES];
 }
+
+-(void)sendMessageToServer:(NSString *)message {
+    
+}
+
+
+#pragma mark -
+#pragma mark Table View Methods
+
+
+-(NSInteger)tableView:(UITableView *)msgView numberOfRowsInSection:(NSInteger)section{
+    
+    NSLog(@"Table Count: %d", self.dataModel.messages.count);
+    return self.dataModel.messages.count;
+}
+
+
+
+-(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    static NSString* CellIdentifier = @"CellIdentifier";
+    
+    UITableViewCell *cell = [msgView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if( cell == nil ) {
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+    }
+    
+    Message* message = [self.dataModel.messages objectAtIndex:indexPath.row];
+    cell.textLabel.text = [message text];
+    return cell;
+}
+
 
 
 @end
