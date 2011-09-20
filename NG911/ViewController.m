@@ -10,7 +10,7 @@
 // Test comment for github
 // Test #2 Modified from Xcode
 // Test #3
-
+// Test #4 after ignoring file
 
 #import "ViewController.h"
 #import "AboutViewController.h"
