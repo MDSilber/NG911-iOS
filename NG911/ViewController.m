@@ -76,7 +76,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     [[self view] setBackgroundColor:[UIColor whiteColor]];
     
-    msgView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, 416) style:UITableViewStylePlain];
+    msgView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, 376) style:UITableViewStylePlain];
     msgView.tag = 3;
     [msgView setDelegate:self];
     [msgView setDataSource:self];
@@ -87,7 +87,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     [textView setBackgroundColor:[UIColor groupTableViewBackgroundColor]];
     
     [msgView addSubview:textView];
- //   [[self view] addSubview:textView];
+    [[self view] addSubview:textView];
 
     locationManager = [[CLLocationManager alloc] init];
     [locationManager setDelegate:self];
@@ -171,14 +171,14 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 {
     [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationCurveEaseInOut animations:^
      {
-         CGRect frame = [msgView frame];
-         frame.size.height -= Keyboard_Offset;
-         
-         [msgView setFrame:frame];
+//         CGRect frame = [msgView frame];
+//         frame.size.height -= Keyboard_Offset;
+//         
+//         [msgView setFrame:frame];
          [msgView setContentOffset:CGPointMake(0, 0)];
          
-         frame = [textView frame];
-         frame.size.height -= Keyboard_Offset;
+         CGRect frame = [textView frame];
+         frame.origin.y -= Keyboard_Offset;
          [textView setFrame:frame];
      }
                      completion:NULL];
@@ -190,9 +190,11 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 {
     [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationCurveEaseInOut animations:^
      {
-         CGRect frame = [[self view] frame];
+         [msgView setContentOffset:CGPointMake(0, 0)];
+         
+         CGRect frame = [textView frame];
          frame.origin.y += Keyboard_Offset;
-         [[self view] setFrame:frame];
+         [textView setFrame:frame];
          
      }
                      completion:NULL];
