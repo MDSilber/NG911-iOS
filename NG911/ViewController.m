@@ -76,7 +76,7 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     [[self view] setBackgroundColor:[UIColor whiteColor]];
     
-    msgView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, 376) style:UITableViewStylePlain];
+    msgView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 320, 416) style:UITableViewStylePlain];
     msgView.tag = 3;
     [msgView setDelegate:self];
     [msgView setDataSource:self];
@@ -111,11 +111,11 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     [textView addSubview:textBox];
     
     
-    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 376)]; 
-    [scrollView setBackgroundColor:[UIColor whiteColor]];
-    [scrollView setScrollEnabled:YES];
-    [scrollView setContentSize:CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height)];
-    scrollView.tag = 2;
+//    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 376)]; 
+//    [scrollView setBackgroundColor:[UIColor whiteColor]];
+//    [scrollView setScrollEnabled:YES];
+//    [scrollView setContentSize:CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height)];
+//    scrollView.tag = 2;
     
     //[scrollView setContentOffset:CGPointMake(0, 100)];
     
@@ -171,14 +171,15 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 {
     [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationCurveEaseInOut animations:^
      {
-         CGRect frame = [[self view] frame];
-         frame.origin.y -= Keyboard_Offset;
+         CGRect frame = [msgView frame];
+         frame.size.height -= Keyboard_Offset;
          
-         //UITextView *myTextView = (UITextView*) [[self view] viewWithTag:1];
-      
-      //   [(UIScrollView*)[[self view] viewWithTag:2] setContentOffset:CGPointMake(0, nextFrameOrigin.y + 66) animated:YES];
-         [[self view] setFrame:frame];
+         [msgView setFrame:frame];
+         [msgView setContentOffset:CGPointMake(0, 0)];
          
+         frame = [textView frame];
+         frame.size.height -= Keyboard_Offset;
+         [textView setFrame:frame];
      }
                      completion:NULL];
     [[[self navigationItem] rightBarButtonItem] setEnabled:YES];
@@ -413,11 +414,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     NSLog(@"finished picking media with info");
     UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-<<<<<<< HEAD
+
     //NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
-=======
-   // NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
->>>>>>> ae7a768824783e637c216b479457ef067ff6bc78
     
     UILabel *dateLabel = [self labelWithDate];
     
@@ -439,16 +437,11 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 }
 
-<<<<<<< HEAD
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker 
 {
     [picker dismissModalViewControllerAnimated:YES];
 }
-=======
--(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    
-    [picker dismissModalViewControllerAnimated:YES];
-}
+
 
 -(void)sendMessageToServer:(NSString *)message {
     
@@ -478,10 +471,8 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
     
     Message* message = [self.dataModel.messages objectAtIndex:indexPath.row];
     cell.textLabel.text = [message text];
+    [[cell contentView] setBackgroundColor:[UIColor blueColor]];
     return cell;
 }
-
-
->>>>>>> ae7a768824783e637c216b479457ef067ff6bc78
 
 @end
