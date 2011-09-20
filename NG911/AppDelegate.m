@@ -9,26 +9,50 @@
 #import "AppDelegate.h"
 #import "Reachability.h"
 #import "ViewController.h"
+#import "DataModel.h"
+#import "Message.h"
+
+
 
 @implementation AppDelegate
 
 @synthesize window = _window;
 @synthesize viewController = _viewController;
+@synthesize dataModel;
 
 - (void)dealloc
 {
     [_window release];
     [_viewController release];
+    [dataModel release];
     [super dealloc];
 }
+
+
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     
+    // created data model
+
+    dataModel = [[DataModel alloc] init];
+    [dataModel loadMessages];
+    
+    Message* message = [[Message alloc] init];
+    message.text = @"Test Message";
+    message.timestamp = @"Sept 19, 2011";
+    
+    [dataModel addMessage:message];
+    
+    NSLog(@"Count in AppD = %d\n", dataModel.messages.count);
+    
+    [message release];    
+    
+    
     if(![AppDelegate connectedToInternet])
     {
         UIAlertView *noInternetAlert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection" 
-                                                                  message:@"Your device has no available internet connection. Please connect to the internet and relaunch app" 
+                                                                  message:@"Your device has no available internet connection. Please connect to the internet and relaunch the app" 
                                                                  delegate:self 
                                                         cancelButtonTitle:@"Exit" 
                                                         otherButtonTitles:nil, nil];
@@ -38,13 +62,17 @@
     }
     
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-    // Override point for customization after application launch.
+    
     self.viewController = [[[ViewController alloc] initWithNibName:@"ViewController" bundle:nil] autorelease];
     [self.viewController setTitle:@"NG911"];
+    
+    [self viewController].dataModel = dataModel;
+    
     navigationController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
     [[self window] addSubview:navigationController.view];
     [self.window makeKeyAndVisible];
     return YES;
+     
 }
 
 +(BOOL)connectedToInternet

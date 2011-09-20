@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+
 @class ViewController;
+@class DataModel;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate,UIAlertViewDelegate>
 {
@@ -19,5 +21,7 @@
 @property (strong, nonatomic) ViewController *viewController;
 
 +(BOOL)connectedToInternet;
+
+@property (nonatomic, retain) DataModel *dataModel;
 
 @end
